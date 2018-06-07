@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My First App</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="checkbox_flood">Floods</string>
+    <string name="checkbox_earthquake">Eartquakes</string>
+    <string name="checkbox_fire">Fires</string>
+    <string name="plain_text">Would you like to receive notifications about?</string>
+    <string name="button_save">Save</string>
+    <string name="plain_text_2">Receive notifications about:</string>
+</resources>
