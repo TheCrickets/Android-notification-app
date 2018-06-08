@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">My First App</string>
+    <string name="app_name">CriC</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="checkbox_flood">Floods</string>
-    <string name="checkbox_earthquake">Eartquakes</string>
+    <string name="checkbox_earthquake">Earthquakes</string>
     <string name="checkbox_fire">Fires</string>
     <string name="plain_text">Would you like to receive notifications about?</string>
     <string name="button_save">Save</string>

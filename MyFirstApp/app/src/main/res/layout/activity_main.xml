@@ -63,6 +63,7 @@
         android:layout_marginRight="130dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="468dp"
+        android:onClick="saveData"
         android:text="@string/button_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
