@@ -1,5 +1,11 @@
 package com.example.myfirstapp;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,14 +19,49 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    TODO de facut json cu datele de trimis: preferintele, ca in fisier, si locatia adaugata la sfarsit
+
+    de vazut cum se ia locatia din telefon
+
+    pe server sa raspund ce am primit
+
+ */
+
+
+
 public class MainActivity extends AppCompatActivity
 {
+    private static final int REQUEST_CODE_PERMISSION = 1;
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        if(Build.VERSION.SDK_INT>= 23)
+        {
+
+            if (checkSelfPermission(mPermission) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{mPermission, }, REQUEST_CODE_PERMISSION);
+                //return;
+                System.out.println("NU NU NU NU NU NU NU");
+            }
+            else
+            {
+                Location location = new Location("service Provider");
+
+                System.out.println("AICI lat " + location.getLatitude());
+                System.out.println("AICI long " + location.getLongitude());
+            //*here manage your code if permission already access
+            }
+        }
+
+        //
 
         //daca e bifat, sa fie bifat
         checkList.add(new IsCheckedEarthquakes());
@@ -130,10 +171,6 @@ public class MainActivity extends AppCompatActivity
                         isChecked.diplayChecked(true);
                     }
                 }
-            }
-            else
-            {
-                System.out.println("BAKA!");
             }
             line = bufferedReader.readLine();
         }
