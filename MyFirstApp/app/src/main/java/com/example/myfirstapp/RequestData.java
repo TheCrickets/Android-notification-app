@@ -3,51 +3,28 @@ package com.example.myfirstapp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RequestData class is used for creating objects that contain the user's preferences and location
+ * the object(s) will be transformed into a json String
+ */
 public class RequestData
 {
-    // todo longitudine, latitudine, list<String>
     private List<String> disasters;
     private double longitude;
     private double latitude;
 
-    public List<String> getDisasters()
-    {
-        return disasters;
-    }
+    public List<String> getDisasters() { return disasters; }
+    public void setDisasters(List<String> disasters) { this.disasters = disasters; }
+    public void addDisaster(String disaster) { disasters.add(disaster); }
 
-    public void setDisasters(List<String> disasters)
-    {
-        this.disasters = disasters;
-    }
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    public double getLongitude()
-    {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude)
-    {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude()
-    {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude)
-    {
-        this.latitude = latitude;
-    }
-
-    public void addDisaster(String disaster)
-    {
-        disasters.add(disaster);
-    }
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
     public RequestData(List<String> disasters, double longitude, double latitude)
     {
-
         this.disasters = disasters;
         this.longitude = longitude;
         this.latitude = latitude;

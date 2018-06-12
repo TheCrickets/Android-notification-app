@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.gcm.Task;
+import com.example.myfirstapp.IsChecked.IsChecked;
+import com.example.myfirstapp.IsChecked.IsCheckedEarthquakes;
+import com.example.myfirstapp.IsChecked.IsCheckedFires;
+import com.example.myfirstapp.IsChecked.IsCheckedFloods;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,16 +19,10 @@ import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         //curat afisarea
         for (IsChecked isChecked : checkList)
         {
-            isChecked.diplayChecked(false);
+            isChecked.displayChecked(false);
         }
 
         //citesc linie cu linie si setez checkbox-ul la true
@@ -186,7 +182,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(isChecked instanceof  IsCheckedEarthquakes)
                     {
-                        isChecked.diplayChecked(true);
+                        isChecked.displayChecked(true);
                         requestData.addDisaster("Earthquakes");
                     }
                 }
@@ -197,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(isChecked instanceof  IsCheckedFires)
                     {
-                        isChecked.diplayChecked(true);
+                        isChecked.displayChecked(true);
                         requestData.addDisaster("Fires");
                     }
                 }
@@ -208,7 +204,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(isChecked instanceof  IsCheckedFloods    )
                     {
-                        isChecked.diplayChecked(true);
+                        isChecked.displayChecked(true);
                         requestData.addDisaster("Floods");
                     }
                 }

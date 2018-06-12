@@ -11,7 +11,6 @@ import java.net.URL;
 
 public class ServerRequest extends AsyncTask<String, Void, String>
 {
-
     @Override
     protected String doInBackground(String... strings)
     {
@@ -33,7 +32,9 @@ public class ServerRequest extends AsyncTask<String, Void, String>
             System.out.println("IUPIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + status);
 
             //primesc raspunsul si dau raspunsul cu return
-            
+            //o sa primesc string cu raspuns        sau exceptie cu timeout
+                            // nu fac nimic la exceptia cu timeout
+            //string-ul il pun intr-o notificare din bara de stare
 
 
         } catch (MalformedURLException e)

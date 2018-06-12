@@ -1,4 +1,6 @@
-package com.example.myfirstapp;
+package com.example.myfirstapp.IsChecked;
+
+import com.example.myfirstapp.IsChecked.IsChecked;
 
 public class IsCheckedFloods extends IsChecked
 {
