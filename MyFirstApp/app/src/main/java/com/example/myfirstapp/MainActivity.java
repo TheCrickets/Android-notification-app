@@ -13,29 +13,32 @@ import com.google.android.gms.gcm.Task;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 /*
     TODO de facut json cu datele de trimis: preferintele, ca in fisier, si locatia adaugata la sfarsit
-
-    de vazut cum se ia locatia din telefon
-
     pe server sa raspund ce am primit
 
  */
 
 public class MainActivity extends AppCompatActivity
 {
-    private static final int REQUEST_CODE_PERMISSION = 1;
-    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    public static RequestData requestData = new RequestData();
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -67,7 +70,17 @@ public class MainActivity extends AppCompatActivity
                         // Got last known location. In some rare situations this can be null.
                         if (location != null)
                         {
-                            System.out.println("MERGEEEEEE " + location.getLongitude());
+                            requestData.setLongitude(location.getLongitude());
+                            requestData.setLatitude(location.getLatitude());
+                            System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEERGE " + requestData.getLatitude());
+                            System.out.println(requestData.getLongitude());
+
+                            Gson gson = new Gson();
+                            String requestDataJson = gson.toJson(requestData);
+                            System.out.println(requestDataJson);
+
+                            //
+
                             // Logic to handle location object
                         }
                         else
@@ -166,6 +179,7 @@ public class MainActivity extends AppCompatActivity
                     if(isChecked instanceof  IsCheckedEarthquakes)
                     {
                         isChecked.diplayChecked(true);
+                        requestData.addDisaster("Earthquakes");
                     }
                 }
             }
@@ -176,6 +190,7 @@ public class MainActivity extends AppCompatActivity
                     if(isChecked instanceof  IsCheckedFires)
                     {
                         isChecked.diplayChecked(true);
+                        requestData.addDisaster("Fires");
                     }
                 }
             }
@@ -186,6 +201,7 @@ public class MainActivity extends AppCompatActivity
                     if(isChecked instanceof  IsCheckedFloods    )
                     {
                         isChecked.diplayChecked(true);
+                        requestData.addDisaster("Floods");
                     }
                 }
             }
