@@ -1,12 +1,18 @@
 package com.example.myfirstapp;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.gcm.Task;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,12 +32,13 @@ import java.util.List;
 
  */
 
-
-
 public class MainActivity extends AppCompatActivity
 {
     private static final int REQUEST_CODE_PERMISSION = 1;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,24 +46,36 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        /*
-        ArrayList<String> permissions=new ArrayList<>();
-        PermissionUtils permissionUtils;
-
-        permissionUtils=new PermissionUtils(MyLocationUsingLocationAPI.this);
-
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
-        */
-
-        //
-
-        GoogleApiClient mGoogleApiClient;
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this).addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) this).addApi(LocationServices.API).build();
-        mGoogleApiClient.connect();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>()
+                {
+                    @Override
+                    public void onSuccess(Location location)
+                    {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null)
+                        {
+                            System.out.println("MERGEEEEEE " + location.getLongitude());
+                            // Logic to handle location object
+                        }
+                        else
+                        {
+                            System.out.println("NU MERGE");
+                        }
+                    }
+                });
 
         //daca e bifat, sa fie bifat
         checkList.add(new IsCheckedEarthquakes());
