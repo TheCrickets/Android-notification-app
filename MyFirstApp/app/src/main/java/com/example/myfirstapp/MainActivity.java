@@ -1,14 +1,12 @@
 package com.example.myfirstapp;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,26 +40,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        if(Build.VERSION.SDK_INT>= 23)
-        {
+        /*
+        ArrayList<String> permissions=new ArrayList<>();
+        PermissionUtils permissionUtils;
 
-            if (checkSelfPermission(mPermission) != PackageManager.PERMISSION_GRANTED)
-            {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{mPermission, }, REQUEST_CODE_PERMISSION);
-                //return;
-                System.out.println("NU NU NU NU NU NU NU");
-            }
-            else
-            {
-                Location location = new Location("service Provider");
+        permissionUtils=new PermissionUtils(MyLocationUsingLocationAPI.this);
 
-                System.out.println("AICI lat " + location.getLatitude());
-                System.out.println("AICI long " + location.getLongitude());
-            //*here manage your code if permission already access
-            }
-        }
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
+        */
 
         //
+
+        GoogleApiClient mGoogleApiClient;
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this).addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) this).addApi(LocationServices.API).build();
+        mGoogleApiClient.connect();
 
         //daca e bifat, sa fie bifat
         checkList.add(new IsCheckedEarthquakes());
@@ -80,6 +75,9 @@ public class MainActivity extends AppCompatActivity
             System.out.println(e + "error");
         }
     }
+
+
+
 
     protected List<IsChecked> checkList = new ArrayList<IsChecked>();
     protected File file = null;
