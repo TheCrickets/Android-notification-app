@@ -76,11 +76,19 @@ public class MainActivity extends AppCompatActivity
                             System.out.println(requestData.getLongitude());
 
                             Gson gson = new Gson();
-                            String requestDataJson = gson.toJson(requestData);
+                            final String requestDataJson = gson.toJson(requestData);
                             System.out.println(requestDataJson);
 
-                            //
 
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    new ServerRequest().execute(requestDataJson);
+                                }
+                            };
+                            // new thread.start(chestia de mai jos)
                             // Logic to handle location object
                         }
                         else
