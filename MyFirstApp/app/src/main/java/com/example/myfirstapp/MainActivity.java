@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity
 
         try
         {
+            notification("aaaaa");
             getDataDisplayCheckbox();
         }
         catch (Exception e)
@@ -225,9 +228,20 @@ public class MainActivity extends AppCompatActivity
         // Do something in response to button
     }
      */
+    static public int notificationId = 0;
+    public void notification(String message)
+    {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, new String())
+                .setSmallIcon(R.drawable.flaviconcric)
+                .setContentTitle("Crisis Containment Service")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId++, mBuilder.build());
+    }
+
 }
 
-
-//Un buton on/off daca vrea notificări
-//Checkboxes cu ce dezastre vrea sa primeasca,
-// deocamdată doar 1, dar fa sa mai pui adăuga ușor și altele
