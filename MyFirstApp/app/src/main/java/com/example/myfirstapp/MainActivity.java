@@ -1,8 +1,11 @@
 package com.example.myfirstapp;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
         try
         {
-            notification("aaaaa");
+            notification("aaaaa", "http://138.68.64.239:55555/api/test");
             getDataDisplayCheckbox();
         }
         catch (Exception e)
@@ -229,17 +232,25 @@ public class MainActivity extends AppCompatActivity
     }
      */
     static public int notificationId = 0;
-    public void notification(String message)
+    public void notification(String message, String url)
     {
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));//(this, AlertDetails.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, new String())
                 .setSmallIcon(R.drawable.flaviconcric)
                 .setContentTitle("Crisis Containment Service")
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(1)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
 
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-// notificationId is a unique int for each notification that you must define
+        // notificationId is a unique int for each notification that you must define
         notificationManager.notify(notificationId++, mBuilder.build());
     }
 
