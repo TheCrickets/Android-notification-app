@@ -18,6 +18,12 @@ import java.net.URL;
 
 public class ServerRequest extends AsyncTask<String, Void, String>
 {
+    /**
+     * this function is responsible of the client-server communication
+     * it sends the json array to the server and gets the response
+     * @param strings
+     * @return string that has the notification
+     */
     @Override
     protected String doInBackground(String... strings)
     {
@@ -30,15 +36,14 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 
             con.setRequestProperty("Content-Type", "application/json");
 
-            //set time here - 10/20 minute - vezi api
-            //con.setConnectTimeout(900000);
-            //con.setReadTimeout(900000);
-
             DataOutputStream out = new DataOutputStream(con.getOutputStream());
             out.writeBytes(strings[0]);
             out.flush();
             out.close();
 
+            int status = con.getResponseCode();
+            if(status != 200)
+                return "";
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -54,12 +59,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
             
             Gson gson = new Gson();
             String message = gson.fromJson(response.toString(), String.class);
-            System.out.println(message);
 
-            int status = con.getResponseCode();
-            System.out.println("IUPIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + status + "  " + message);
-
-            //return strings[0];
             return message;
 
         } catch (MalformedURLException e)

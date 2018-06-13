@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static java.lang.Thread.sleep;
+
 /*
     TODO de facut json cu datele de trimis: preferintele, ca in fisier, si locatia adaugata la sfarsit
     pe server sa raspund ce am primit
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        /**
+         * this block of code is responsible of getting the location from the user's phone,
+         * it calls the function that prepares the json that will be send to the server,
+         * it creates a thread that will send a request to the server every 5 minutes and checks the response.
+         * if the response is not null or an empty string, the function calls functions that manipulate the server's response and display a notification on the phone
+         */
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>()
                 {
@@ -76,14 +84,9 @@ public class MainActivity extends AppCompatActivity
                         {
                             requestData.setLongitude(location.getLongitude());
                             requestData.setLatitude(location.getLatitude());
-                            System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEERGE " + requestData.getLatitude());
-                            System.out.println(requestData.getLongitude());
 
                             Gson gson = new Gson();
                             final String requestDataJson = gson.toJson(requestData);
-                            System.out.println("ALAALALALALLALALALALAAAAAAA" + requestDataJson);
-                            //System.out.println(requestDataJson);
-
 
                             new Thread(
                                     new Runnable()
@@ -91,15 +94,19 @@ public class MainActivity extends AppCompatActivity
                                         @Override
                                         public void run()
                                         {
-                                            //while(true)
+                                            while(true)
                                             {
                                                 try
                                                 {
                                                     serverMessage[0] = new ServerRequest().execute(requestDataJson).get();
                                                     String aux = serverMessage[0];
-                                                    String []message = aux.split("http");
-                                                    System.out.println("PETRICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  " + message[0] + " aaaaa " + message[1]);
-                                                    notification(message[0], "http" + message[1]);
+                                                    if (aux != null && !aux.equals(""))
+                                                    {
+                                                        String[] message = aux.split("http");
+                                                        notification(message[0], "http" + message[1]);
+                                                    }
+                                                    sleep(300000);
+
 
                                                 } catch (InterruptedException e)
                                                 {
@@ -112,8 +119,6 @@ public class MainActivity extends AppCompatActivity
                                         }
                                     }).start();
 
-                            // new thread.start(chestia de mai jos)
-                            // Logic to handle location object
                         } else
                         {
                             System.out.println("NU MERGE");
@@ -121,7 +126,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        //daca e bifat, sa fie bifat
         checkList.add(new IsCheckedEarthquakes());
         checkList.get(0).setView(findViewById(R.id.checkBox));
         checkList.add(new IsCheckedFires());
@@ -142,7 +146,11 @@ public class MainActivity extends AppCompatActivity
     protected List<IsChecked> checkList = new ArrayList<IsChecked>();
     protected File file = null;
 
-
+    /**
+     * gets the status of the checkboxes and saves it in a file on the internal storage
+     * @param view
+     * @throws IOException
+     */
     protected void saveData(View view) throws IOException
     {
         //pregatesc mesajul de pus in fisier
@@ -170,7 +178,6 @@ public class MainActivity extends AppCompatActivity
 
         bufferedWriter.close();
 
-
         try
         {
             getDataDisplayCheckbox();
@@ -180,6 +187,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * this function sets the checkboxes after the user's preferences
+     * the preferences have been saved in a file on the internal storage
+     * @throws IOException
+     */
     protected void getDataDisplayCheckbox() throws IOException
     {
         if (file == null)
@@ -235,11 +247,6 @@ public class MainActivity extends AppCompatActivity
             line = bufferedReader.readLine();
         }
         bufferedReader.close();
-    }
-
-    protected void displaySaveMessage()
-    {
-        // "Your preference has been saved!"
     }
 
     /**
