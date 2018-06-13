@@ -30,7 +30,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
         URL url = null;
         try
         {
-            url = new URL("http://192.168.0.103:55555/api/notification");
+            url = new URL("http://138.68.64.239:55556/api/notification");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
 
