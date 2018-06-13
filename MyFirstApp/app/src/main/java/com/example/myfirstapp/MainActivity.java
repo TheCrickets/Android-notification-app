@@ -78,21 +78,26 @@ public class MainActivity extends AppCompatActivity
 
                             Gson gson = new Gson();
                             final String requestDataJson = gson.toJson(requestData);
-                            System.out.println(requestDataJson);
+                            System.out.println("ALAALALALALLALALALALAAAAAAA" + requestDataJson);
+                            //System.out.println(requestDataJson);
 
 
-                            new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    new ServerRequest().execute(requestDataJson);
-                                }
-                            };
+                            new Thread(
+                                    new Runnable()
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            //while(true)
+                                            {
+                                                new ServerRequest().execute(requestDataJson);
+                                            }
+                                        }
+                                    }).start();
+
                             // new thread.start(chestia de mai jos)
                             // Logic to handle location object
-                        }
-                        else
+                        } else
                         {
                             System.out.println("NU MERGE");
                         }
@@ -111,14 +116,11 @@ public class MainActivity extends AppCompatActivity
         {
             notification("aaaaa", "http://138.68.64.239:55555/api/test");
             getDataDisplayCheckbox();
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             System.out.println(e + "error");
         }
     }
-
-
 
 
     protected List<IsChecked> checkList = new ArrayList<IsChecked>();
@@ -156,8 +158,7 @@ public class MainActivity extends AppCompatActivity
         try
         {
             getDataDisplayCheckbox();
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             System.out.println(e + "error");
         }
@@ -182,33 +183,33 @@ public class MainActivity extends AppCompatActivity
         //citesc linie cu linie si setez checkbox-ul la true
         while (line != null)
         {
-            if(line.contains("Earthquakes") && line.contains("1"))
+            if (line.contains("Earthquakes") && line.contains("1"))
             {
                 for (IsChecked isChecked : checkList)
                 {
-                    if(isChecked instanceof  IsCheckedEarthquakes)
+                    if (isChecked instanceof IsCheckedEarthquakes)
                     {
                         isChecked.displayChecked(true);
                         requestData.addDisaster("Earthquakes");
                     }
                 }
             }
-            if(line.contains("Fires") && line.contains("1"))
+            if (line.contains("Fires") && line.contains("1"))
             {
                 for (IsChecked isChecked : checkList)
                 {
-                    if(isChecked instanceof  IsCheckedFires)
+                    if (isChecked instanceof IsCheckedFires)
                     {
                         isChecked.displayChecked(true);
                         requestData.addDisaster("Fires");
                     }
                 }
             }
-            if(line.contains("Floods") && line.contains("1"))
+            if (line.contains("Floods") && line.contains("1"))
             {
                 for (IsChecked isChecked : checkList)
                 {
-                    if(isChecked instanceof  IsCheckedFloods    )
+                    if (isChecked instanceof IsCheckedFloods)
                     {
                         isChecked.displayChecked(true);
                         requestData.addDisaster("Floods");
@@ -225,13 +226,15 @@ public class MainActivity extends AppCompatActivity
         // "Your preference has been saved!"
     }
 
-    /** Called when the user taps the Send button
-    public fun sendMessage(view : View)
-    {
-        // Do something in response to button
-    }
+    /**
+     * Called when the user taps the Send button
+     * public fun sendMessage(view : View)
+     * {
+     * // Do something in response to button
+     * }
      */
     static public int notificationId = 0;
+
     public void notification(String message, String url)
     {
         // Create an explicit intent for an Activity in your app
