@@ -51,8 +51,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 
             //print result
             System.out.println(response.toString());
-
-            //InputSource serverResponse = new InputSource(url.openStream());
+            
             Gson gson = new Gson();
             String message = gson.fromJson(response.toString(), String.class);
             System.out.println(message);
@@ -60,7 +59,8 @@ public class ServerRequest extends AsyncTask<String, Void, String>
             int status = con.getResponseCode();
             System.out.println("IUPIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + status + "  " + message);
 
-            return strings[0];
+            //return strings[0];
+            return message;
 
         } catch (MalformedURLException e)
         {

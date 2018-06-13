@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /*
     TODO de facut json cu datele de trimis: preferintele, ca in fisier, si locatia adaugata la sfarsit
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final String[] serverMessage = new String[1];
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -90,7 +93,21 @@ public class MainActivity extends AppCompatActivity
                                         {
                                             //while(true)
                                             {
-                                                new ServerRequest().execute(requestDataJson);
+                                                try
+                                                {
+                                                    serverMessage[0] = new ServerRequest().execute(requestDataJson).get();
+                                                    String aux = serverMessage[0];
+                                                    String []message = aux.split("http");
+                                                    System.out.println("PETRICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  " + message[0] + " aaaaa " + message[1]);
+                                                    notification(message[0], "http" + message[1]);
+
+                                                } catch (InterruptedException e)
+                                                {
+                                                    e.printStackTrace();
+                                                } catch (ExecutionException e)
+                                                {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     }).start();
@@ -114,11 +131,10 @@ public class MainActivity extends AppCompatActivity
 
         try
         {
-            notification("aaaaa", "http://138.68.64.239:55555/api/test");
             getDataDisplayCheckbox();
         } catch (Exception e)
         {
-            System.out.println(e + "error");
+            System.err.println(e + "error");
         }
     }
 
